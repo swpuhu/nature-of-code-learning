@@ -2,6 +2,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const fs = require("fs");
 const path = require("path");
+const ejs = require("ejs");
 
 const allPages = {};
 const htmlPages = [];
@@ -29,7 +30,25 @@ function readDirectory(rootPath) {
     }
 }
 
+function generateContentHtml() {
+    console.log(allPages);
+    const html = ejs.render(
+        fs
+            .readFileSync(
+                path.resolve(__dirname, "./public/contentTemplate.html")
+            )
+            .toString(),
+        {
+            pages: Object.keys(allPages),
+            pageValues: Object.values(allPages),
+        }
+    );
+    fs.writeFileSync(path.resolve(__dirname, "./public/content.html"), html);
+}
+
 readDirectory(path.resolve(__dirname, "./src"));
+
+generateContentHtml();
 
 module.exports = {
     mode: "development",
@@ -63,5 +82,14 @@ module.exports = {
         },
     },
 
-    plugins: [new CleanWebpackPlugin(), ...htmlPages],
+    plugins: [
+        new CleanWebpackPlugin(),
+        new HtmlWebpackPlugin({
+            title: "Content",
+            filename: "index.html",
+            template: "public/content.html",
+            chunks: [],
+        }),
+        ...htmlPages,
+    ],
 };

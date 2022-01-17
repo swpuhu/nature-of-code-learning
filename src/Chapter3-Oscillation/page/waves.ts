@@ -5,9 +5,6 @@ function sketch() {
 }
 
 const p = new P5(sketch, document.body);
-p.preload = function () {
-    console.log(this);
-};
 
 p.setup = function () {
     p.createCanvas(640, 360);
