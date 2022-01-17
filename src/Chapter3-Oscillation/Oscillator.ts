@@ -1,12 +1,10 @@
 import p5 from "p5";
 
 export class Oscillator {
-    public angle: p5.Vector;ƒ
+    public angle: p5.Vector;
     public velocity: p5.Vector;
-    public amplitude: p5.Vector
-    constructor(
-        public p: p5,
-    ) {
+    public amplitude: p5.Vector;
+    constructor(public p: p5) {
         this.angle = p.createVector();
         this.velocity = p.createVector(
             p.random(-0.05, 0.05),
